@@ -1,0 +1,7 @@
+﻿  Point2KML.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\atlmfc\include\afx.h(38): warning C4996: 'MBCS_Support_Deprecated_In_MFC': MBCS support in MFC is deprecated and may be removed in a future version of MFC.
+  c:\program files (x86)\microsoft visual studio 14.0\vc\atlmfc\include\afx.h(33): note: 参见“MBCS_Support_Deprecated_In_MFC”的声明
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+d:\nap-of-the-object_bak\point2kml\point2kml.cpp(113): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  Point2KML.vcxproj -> D:\Nap-of-the-object_bak\x64\Debug\Point2KML.exe
+  Point2KML.vcxproj -> D:\Nap-of-the-object_bak\x64\Debug\Point2KML.pdb (Full PDB)

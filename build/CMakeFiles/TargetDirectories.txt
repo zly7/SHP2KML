@@ -1,0 +1,3 @@
+/home/zly/SHP2KML/build/CMakeFiles/ShapefileReader.dir
+/home/zly/SHP2KML/build/CMakeFiles/edit_cache.dir
+/home/zly/SHP2KML/build/CMakeFiles/rebuild_cache.dir
