@@ -66,6 +66,10 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "*.txx": "cpp",
+        "shared_mutex": "cpp",
+        "cfenv": "cpp",
+        "*.ipp": "cpp"
     }
 }

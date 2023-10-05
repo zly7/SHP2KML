@@ -153,6 +153,30 @@ Point2KML_refer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ShapefileReader.dir/build.make CMakeFiles/ShapefileReader.dir/Point2KML_refer.cpp.s
 .PHONY : Point2KML_refer.cpp.s
 
+PoissonDiskSample.o: PoissonDiskSample.cpp.o
+.PHONY : PoissonDiskSample.o
+
+# target to build an object file
+PoissonDiskSample.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ShapefileReader.dir/build.make CMakeFiles/ShapefileReader.dir/PoissonDiskSample.cpp.o
+.PHONY : PoissonDiskSample.cpp.o
+
+PoissonDiskSample.i: PoissonDiskSample.cpp.i
+.PHONY : PoissonDiskSample.i
+
+# target to preprocess a source file
+PoissonDiskSample.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ShapefileReader.dir/build.make CMakeFiles/ShapefileReader.dir/PoissonDiskSample.cpp.i
+.PHONY : PoissonDiskSample.cpp.i
+
+PoissonDiskSample.s: PoissonDiskSample.cpp.s
+.PHONY : PoissonDiskSample.s
+
+# target to generate assembly for a file
+PoissonDiskSample.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ShapefileReader.dir/build.make CMakeFiles/ShapefileReader.dir/PoissonDiskSample.cpp.s
+.PHONY : PoissonDiskSample.cpp.s
+
 generate_path.o: generate_path.cpp.o
 .PHONY : generate_path.o
 
@@ -201,6 +225,30 @@ tinyxml2.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ShapefileReader.dir/build.make CMakeFiles/ShapefileReader.dir/tinyxml2.cpp.s
 .PHONY : tinyxml2.cpp.s
 
+visulize3Dpolygon.o: visulize3Dpolygon.cpp.o
+.PHONY : visulize3Dpolygon.o
+
+# target to build an object file
+visulize3Dpolygon.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ShapefileReader.dir/build.make CMakeFiles/ShapefileReader.dir/visulize3Dpolygon.cpp.o
+.PHONY : visulize3Dpolygon.cpp.o
+
+visulize3Dpolygon.i: visulize3Dpolygon.cpp.i
+.PHONY : visulize3Dpolygon.i
+
+# target to preprocess a source file
+visulize3Dpolygon.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ShapefileReader.dir/build.make CMakeFiles/ShapefileReader.dir/visulize3Dpolygon.cpp.i
+.PHONY : visulize3Dpolygon.cpp.i
+
+visulize3Dpolygon.s: visulize3Dpolygon.cpp.s
+.PHONY : visulize3Dpolygon.s
+
+# target to generate assembly for a file
+visulize3Dpolygon.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ShapefileReader.dir/build.make CMakeFiles/ShapefileReader.dir/visulize3Dpolygon.cpp.s
+.PHONY : visulize3Dpolygon.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -213,12 +261,18 @@ help:
 	@echo "... Point2KML_refer.o"
 	@echo "... Point2KML_refer.i"
 	@echo "... Point2KML_refer.s"
+	@echo "... PoissonDiskSample.o"
+	@echo "... PoissonDiskSample.i"
+	@echo "... PoissonDiskSample.s"
 	@echo "... generate_path.o"
 	@echo "... generate_path.i"
 	@echo "... generate_path.s"
 	@echo "... tinyxml2.o"
 	@echo "... tinyxml2.i"
 	@echo "... tinyxml2.s"
+	@echo "... visulize3Dpolygon.o"
+	@echo "... visulize3Dpolygon.i"
+	@echo "... visulize3Dpolygon.s"
 .PHONY : help
 
 

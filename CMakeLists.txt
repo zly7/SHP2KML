@@ -17,13 +17,18 @@ project(ShapefileReader)
 # Find GDAL
 find_package(GDAL REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
 
-add_executable(ShapefileReader generate_path.cpp Point2KML_refer.cpp tinyxml2.cpp)
+add_executable(ShapefileReader generate_path.cpp Point2KML_refer.cpp tinyxml2.cpp PoissonDiskSample.cpp visulize3Dpolygon.cpp)
 
 
-# Link GDAL
-target_link_libraries(ShapefileReader PRIVATE ${GDAL_LIBRARY})
+# Link
+# Link
+target_link_libraries(ShapefileReader PRIVATE 
+    ${GDAL_LIBRARY}
+    ${OpenCV_LIBS}
+    ${VTK_LIBRARIES}
+)
 target_include_directories(ShapefileReader PRIVATE ${GDAL_INCLUDE_DIR})
-
-target_link_libraries(ShapefileReader PRIVATE ${OpenCV_LIBS})
 

@@ -387,4 +387,109 @@ CMakeFiles/ShapefileReader.dir/generate_path.cpp.o: \
  /usr/include/gdal/gdal_priv.h /usr/include/gdal/gdal.h \
  /usr/include/gdal/gdal_frmts.h /usr/include/gdal/cpl_multiproc.h \
  /usr/include/c++/11/iterator /usr/include/c++/11/bits/stream_iterator.h \
- /home/zly/SHP2KML/Point2KML_refer.h /home/zly/SHP2KML/tinyxml2.h
+ /home/zly/SHP2KML/Point2KML_refer.h /home/zly/SHP2KML/tinyxml2.h \
+ /home/zly/SHP2KML/PoissonDiskSampler.h /usr/include/c++/11/random \
+ /usr/include/c++/11/bits/random.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/opt_random.h \
+ /usr/include/c++/11/bits/random.tcc /usr/include/c++/11/numeric \
+ /usr/include/c++/11/bits/stl_numeric.h \
+ /usr/include/c++/11/pstl/glue_numeric_defs.h \
+ /home/zly/SHP2KML/visulize3Dpolygon.h \
+ /usr/include/vtk-9.1/vtkSmartPointer.h \
+ /usr/include/vtk-9.1/vtkSmartPointerBase.h \
+ /usr/include/vtk-9.1/vtkCommonCoreModule.h \
+ /usr/include/vtk-9.1/vtkObjectBase.h /usr/include/vtk-9.1/vtkFeatures.h \
+ /usr/include/vtk-9.1/vtkIndent.h \
+ /usr/include/vtk-9.1/vtkSystemIncludes.h \
+ /usr/include/vtk-9.1/vtkWin32Header.h /usr/include/vtk-9.1/vtkABI.h \
+ /usr/include/vtk-9.1/vtkBuild.h /usr/include/vtk-9.1/vtkPlatform.h \
+ /usr/include/vtk-9.1/vtkIOStream.h /usr/include/c++/11/fstream \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+ /usr/include/c++/11/bits/fstream.tcc /usr/include/vtk-9.1/vtkType.h \
+ /usr/include/vtk-9.1/vtkCompiler.h /usr/include/vtk-9.1/vtkLegacy.h \
+ /usr/include/vtk-9.1/vtkOptions.h /usr/include/vtk-9.1/vtk_kwiml.h \
+ /usr/include/vtk-9.1/vtkkwiml/abi.h /usr/include/vtk-9.1/vtkkwiml/int.h \
+ /usr/include/vtk-9.1/vtkkwiml/abi.h /usr/include/inttypes.h \
+ /usr/include/vtk-9.1/vtkWrappingHints.h \
+ /usr/include/vtk-9.1/vtkOStreamWrapper.h \
+ /usr/include/vtk-9.1/vtkOStrStreamWrapper.h /usr/include/c++/11/atomic \
+ /usr/include/vtk-9.1/vtkMeta.h /usr/include/vtk-9.1/vtkNew.h \
+ /usr/include/vtk-9.1/vtkPolyData.h \
+ /usr/include/vtk-9.1/vtkCommonDataModelModule.h \
+ /usr/include/vtk-9.1/vtkDeprecation.h /usr/include/vtk-9.1/vtkVersion.h \
+ /usr/include/vtk-9.1/vtkObject.h /usr/include/vtk-9.1/vtkSetGet.h \
+ /usr/include/vtk-9.1/vtkTimeStamp.h \
+ /usr/include/vtk-9.1/vtkWeakPointerBase.h \
+ /usr/include/vtk-9.1/vtkVersionMacros.h \
+ /usr/include/vtk-9.1/vtkPointSet.h /usr/include/vtk-9.1/vtkDataSet.h \
+ /usr/include/vtk-9.1/vtkDataObject.h /usr/include/vtk-9.1/vtkCellTypes.h \
+ /usr/include/vtk-9.1/vtkCellType.h /usr/include/vtk-9.1/vtkIdTypeArray.h \
+ /usr/include/vtk-9.1/vtkAOSDataArrayTemplate.h \
+ /usr/include/vtk-9.1/vtkBuffer.h /usr/include/vtk-9.1/vtkObjectFactory.h \
+ /usr/include/vtk-9.1/vtkDebugLeaksManager.h \
+ /usr/include/vtk-9.1/vtkGenericDataArray.h \
+ /usr/include/vtk-9.1/vtkDataArray.h \
+ /usr/include/vtk-9.1/vtkAbstractArray.h \
+ /usr/include/vtk-9.1/vtkVariant.h /usr/include/vtk-9.1/vtkStdString.h \
+ /usr/include/vtk-9.1/vtkVariantInlineOperators.h \
+ /usr/include/vtk-9.1/vtkVTK_USE_SCALED_SOA_ARRAYS.h \
+ /usr/include/vtk-9.1/vtkGenericDataArrayLookupHelper.h \
+ /usr/include/vtk-9.1/vtkIdList.h /usr/include/vtk-9.1/vtkSmartPointer.h \
+ /usr/include/vtk-9.1/vtkTypeTraits.h /usr/include/c++/11/cassert \
+ /usr/include/vtk-9.1/vtkGenericDataArray.txx \
+ /usr/include/vtk-9.1/vtkMath.h /usr/include/vtk-9.1/vtkMathPrivate.hxx \
+ /usr/include/vtk-9.1/vtkMatrixUtilities.h \
+ /usr/include/vtk-9.1/vtkMathConfigure.h \
+ /usr/include/vtk-9.1/vtkVariantCast.h /usr/include/vtk-9.1/vtkIntArray.h \
+ /usr/include/vtk-9.1/vtkUnsignedCharArray.h \
+ /usr/include/vtk-9.1/vtkEmptyCell.h /usr/include/vtk-9.1/vtkCell.h \
+ /usr/include/vtk-9.1/vtkBoundingBox.h \
+ /usr/include/vtk-9.1/vtkGenericCell.h /usr/include/vtk-9.1/vtkPoints.h \
+ /usr/include/vtk-9.1/vtkCellArray.h \
+ /usr/include/vtk-9.1/vtkDataArrayRange.h \
+ /usr/include/vtk-9.1/vtkDataArrayMeta.h /usr/include/vtk-9.1/vtkAssume.h \
+ /usr/include/vtk-9.1/vtkDebugRangeIterators.h \
+ /usr/include/vtk-9.1/vtkDataArrayTupleRange_AOS.h \
+ /usr/include/vtk-9.1/vtkDataArrayTupleRange_Generic.h \
+ /usr/include/vtk-9.1/vtkDataArrayAccessor.h \
+ /usr/include/vtk-9.1/vtkDataArrayValueRange_AOS.h \
+ /usr/include/vtk-9.1/vtkDataArrayValueRange_Generic.h \
+ /usr/include/vtk-9.1/vtkTypeInt32Array.h \
+ /usr/include/vtk-9.1/vtkTypeInt64Array.h \
+ /usr/include/vtk-9.1/vtkLongLongArray.h \
+ /usr/include/vtk-9.1/vtkTypeList.h \
+ /usr/include/vtk-9.1/vtkTypeListMacros.h \
+ /usr/include/vtk-9.1/vtkTypeList.txx /usr/include/vtk-9.1/vtkCellLinks.h \
+ /usr/include/vtk-9.1/vtkAbstractCellLinks.h \
+ /usr/include/vtk-9.1/vtkPolyDataInternals.h \
+ /usr/include/vtk-9.1/vtkPoints.h /usr/include/vtk-9.1/vtkPolyLine.h \
+ /usr/include/vtk-9.1/vtkCellArray.h \
+ /usr/include/vtk-9.1/vtkPolyDataMapper.h \
+ /usr/include/vtk-9.1/vtkMapper.h \
+ /usr/include/vtk-9.1/vtkAbstractMapper3D.h \
+ /usr/include/vtk-9.1/vtkAbstractMapper.h \
+ /usr/include/vtk-9.1/vtkAlgorithm.h \
+ /usr/include/vtk-9.1/vtkCommonExecutionModelModule.h \
+ /usr/include/vtk-9.1/vtkRenderingCoreModule.h \
+ /usr/include/vtk-9.1/vtkFiltersCoreModule.h \
+ /usr/include/vtk-9.1/vtkActor.h /usr/include/vtk-9.1/vtkProp3D.h \
+ /usr/include/vtk-9.1/vtkProp.h /usr/include/vtk-9.1/vtkRenderer.h \
+ /usr/include/vtk-9.1/vtkViewport.h \
+ /usr/include/vtk-9.1/vtkActorCollection.h \
+ /usr/include/vtk-9.1/vtkActor.h /usr/include/vtk-9.1/vtkPropCollection.h \
+ /usr/include/vtk-9.1/vtkCollection.h \
+ /usr/include/vtk-9.1/vtkVolumeCollection.h \
+ /usr/include/vtk-9.1/vtkVolume.h /usr/include/vtk-9.1/vtkRenderWindow.h \
+ /usr/include/vtk-9.1/vtkWindow.h \
+ /usr/include/vtk-9.1/vtkRenderWindowInteractor.h \
+ /usr/include/vtk-9.1/vtkCommand.h /usr/include/vtk-9.1/vtkProperty.h \
+ /usr/include/vtk-9.1/vtkAxesActor.h \
+ /usr/include/vtk-9.1/vtkRenderingAnnotationModule.h \
+ /usr/include/vtk-9.1/vtkOrientationMarkerWidget.h \
+ /usr/include/vtk-9.1/vtkInteractionWidgetsModule.h \
+ /usr/include/vtk-9.1/vtkInteractorObserver.h \
+ /usr/include/vtk-9.1/vtkSphereSource.h \
+ /usr/include/vtk-9.1/vtkFiltersSourcesModule.h \
+ /usr/include/vtk-9.1/vtkPolyDataAlgorithm.h \
+ /usr/include/vtk-9.1/vtkPolyData.h /usr/include/vtk-9.1/vtkGlyph3D.h

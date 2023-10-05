@@ -1,10 +1,9 @@
 #include "generate_path.h"
 #include "Point2KML_refer.h"
+#include "PoissonDiskSampler.h"
+#include "visulize3Dpolygon.h"
 
 
-double distance(const Point3D& a, const Point3D& b) {
-    return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-}
 
 std::vector<Point3D> greedyTSP(const Point3D& start, const std::vector<Point3D>& points) {
     std::vector<Point3D> result;
@@ -19,7 +18,7 @@ std::vector<Point3D> greedyTSP(const Point3D& start, const std::vector<Point3D>&
 
         for (size_t j = 0; j < points.size(); ++j) {
             if (!visited[j]) {
-                double dist = distance(current, points[j]);
+                double dist = Point3D::distance(current, points[j]);
                 if (dist < minDist) {
                     minDist = dist;
                     nextPointIndex = j;
@@ -37,7 +36,7 @@ std::vector<Point3D> greedyTSP(const Point3D& start, const std::vector<Point3D>&
     return result;
 }
 
-std::vector<Point3D> interpolatePoints(const std::vector<Point3D>& originalResult, double assumedZ, double interval) {
+std::vector<Point3D> interpolatePoints(const std::vector<Point3D>& originalResult, double interval) {
     std::vector<Point3D> interpolatedResult;
 
     for (size_t i = 0; i < originalResult.size() - 1; ++i) {
@@ -54,7 +53,7 @@ std::vector<Point3D> interpolatePoints(const std::vector<Point3D>& originalResul
             Point3D interpolatedPoint = {
                 A.x + t * (B.x - A.x),
                 A.y + t * (B.y - A.y),
-                assumedZ  // 使用给定的Z坐标
+                A.z + t * (B.z - A.z)
             };
             interpolatedResult.push_back(interpolatedPoint);
         }
@@ -71,25 +70,41 @@ std::vector<Point3D> interpolatePoints(const std::vector<Point3D>& originalResul
 
 
 std::vector<Waypoint> convertToWaypoints(const std::vector<Point3D>& points3D,double centralMeridian) {
-    std::vector<Waypoint> waypoints;
-    for (const auto& point : points3D) {
-        Waypoint waypoint;
-        waypoint.lon = point.x + centralMeridian; // 经度
-        waypoint.lat = point.y; // 纬度
-        waypoint.alt = point.z; // 海拔
-        
-        // 设置默认值
-        waypoint.x = 0.0;       // 如果Waypoint的x有其他用途，可以根据实际情况进行修改
-        waypoint.y = 0.0;       // 如果Waypoint的y有其他用途，可以根据实际情况进行修改
-        waypoint.pitch = 0.0;   // 可以根据实际情况进行修改
-        waypoint.heading = 0.0; // 可以根据实际情况进行修改
-        waypoint.baseLine = 0.0; // 可以根据实际情况进行修改
-        waypoint.nStripID = 0;  // 可以根据实际情况进行修改
+        std::vector<Waypoint> waypoints(points3D.size());
 
-        waypoints.push_back(waypoint);
+    // 创建空间参考
+    OGRSpatialReference wGS84, cGCS114E;
+    wGS84.importFromEPSG(4326);
+    cGCS114E.importFromEPSG(4547);
+
+    // 创建坐标转换对象
+    OGRCoordinateTransformation* proj_trans = OGRCreateCoordinateTransformation(&cGCS114E, &wGS84);
+
+    // 准备坐标数组
+    std::vector<double> x(points3D.size()), y(points3D.size()), z(points3D.size());
+    for (size_t i = 0; i < points3D.size(); ++i) {
+        x[i] = points3D[i].x;
+        y[i] = points3D[i].y;
+        z[i] = points3D[i].z;
+    }
+
+    // 批量转换坐标
+    proj_trans->Transform(points3D.size(), x.data(), y.data(), z.data());
+    for (size_t i = 0; i < points3D.size(); ++i) {
+        waypoints[i].lon = x[i] + centralMeridian;
+        waypoints[i].lat = y[i] ;
+        waypoints[i].alt = z[i];
+        waypoints[i].x = 0.0;
+        waypoints[i].y = 0.0;
+        waypoints[i].pitch = -90;  // 相机垂直对准地面
+        waypoints[i].heading = 0.0;  // 相机垂直对准地面
+        waypoints[i].baseLine = 0.0;
+        waypoints[i].nStripID = 0;
     }
     return waypoints;
 }
+
+
 
 
 int main() {
@@ -129,7 +144,7 @@ int main() {
 
     std::vector<Point3D> centerPoints; //si
     std::vector<Vector3D> normalVectors; //ni
-    double d_SGD = 20; //d_SGD -meters
+    double d_SGD = 10; //d_SGD -meters
     std::vector<Point3D> viewPoints; //vi
     std::vector<Polygon3D> polygonPoints;
 
@@ -140,16 +155,19 @@ int main() {
             OGRPolygon *poPolygon = (OGRPolygon *) poGeometry;
             OGRLinearRing *poRing = poPolygon->getExteriorRing();
             Polygon3D poly;
-                for(int i = 0; i < poRing->getNumPoints(); i++) {
+            double totalZ = 0.0; // 用于累加所有顶点的Z值
+            for(int i = 0; i < poRing->getNumPoints(); i++) {
                 OGRPoint oPoint;
                 poRing->getPoint(i, &oPoint);
-                std::cout << "X: " << oPoint.getX() << ", Y: " << oPoint.getY() << std::endl;
+                std::cout << "X: " << oPoint.getX() << ", Y: " << oPoint.getY() << ", Z: " << oPoint.getZ() << std::endl;
                 if(oPoint.getX() < minX) minX = oPoint.getX();
                 if(oPoint.getY() < minY) minY = oPoint.getY();
                 if(oPoint.getX() > maxX) maxX = oPoint.getX();
                 if(oPoint.getY() > maxY) maxY = oPoint.getY();
                 poly.points[i] = {oPoint.getX(), oPoint.getY(), oPoint.getZ()};
+                totalZ += oPoint.getZ();
             }
+            double averageZ = totalZ / poRing->getNumPoints(); // 计算Z值的平均值
             polygonPoints.push_back(poly);
             normalVectors.push_back(averageNormalVector(poly));
             OGRPoint centroid;
@@ -157,7 +175,7 @@ int main() {
                 std::cout << "Failed to compute centroid." << std::endl;
                 exit(1);
             }
-            centerPoints.push_back({centroid.getX(), centroid.getY(), centroid.getZ()});
+            centerPoints.push_back({centroid.getX(), centroid.getY(), averageZ});
             
         } else {
             std::cout << "No geometry." << std::endl;
@@ -178,58 +196,42 @@ int main() {
         viewPoints.push_back(viewPoint);
     }
 
+
     double d_prj = 0.958*4.5;
     double r_overlap = 0.3;
     double D_disk = d_prj * (1-r_overlap);
+    float cell_size = 2; // for hash in poisson disk sampling
 
-    //greedyTSP
-    std::vector<Point3D> result = greedyTSP(centerPoints[0], centerPoints);
+    std::vector<std::vector<Point3D>> resultFrom;
+    if(GlobalConstants::ALGORITHM_NAME=="possion_sample_and_greedyTSP"){
+
+        PoissonDiskSampler sampler(cell_size, viewPoints);
+        std::vector<Point3D> sample_viewpoints = sampler.PoissonDiskSampling(D_disk, viewPoints);
+        
+        std::vector<Point3D> resultFromTemp = greedyTSP(sample_viewpoints[0], sample_viewpoints);
+        resultFrom.push_back(resultFromTemp);
+    }else if (GlobalConstants::ALGORITHM_NAME=="cluster_and_direct_planning"){
+        int k = GlobalConstants::num_planes; 
+        std::vector<std::vector<Point3D>>  clusters = kMeansClustering(viewPoints, k);
+
+        resultFrom = 
+    }else{
+        std::cout<<"wrong algorithm name"<<std::endl;
+
+    }
+    
     double interval = 1.0;  // 1米间隔
-    double assumedZValue = 30.0;  // 假设的Z坐标
-    std::vector<Point3D> newResult = interpolatePoints(result, assumedZValue, interval);
+    std::vector<Point3D> newResult = interpolatePoints(resultFrom, interval);
     std::vector<Waypoint> waypoints = convertToWaypoints(newResult, centralMeridian);
     generateKMLFromWaypoints(waypoints, "final_output.kml");
 
     double scaleX = img.cols / (maxX - minX);
     double scaleY = img.rows / (maxY - minY);
-    poLayer->ResetReading();
-    while((poFeature = poLayer->GetNextFeature()) != NULL) {
-        OGRGeometry *poGeometry;
-        poGeometry = poFeature->GetGeometryRef();
 
-        if(poGeometry != NULL && wkbFlatten(poGeometry->getGeometryType()) == wkbPolygon) {
-            OGRPolygon *poPolygon = (OGRPolygon *) poGeometry;
-            OGRLinearRing *poRing = poPolygon->getExteriorRing();
 
-            std::vector<cv::Point> cvPoints;
-            for(int i = 0; i < poRing->getNumPoints(); i++) {
-                OGRPoint oPoint;
-                poRing->getPoint(i, &oPoint);
-                // Convert OGRPoint to cv::Point. Adjust the scaling and offset as needed.
-                cv::Point cvPoint((oPoint.getX() - minX) * scaleX, (maxY - oPoint.getY()) * scaleY);
-                cvPoints.push_back(cvPoint);
-            }
-            cv::polylines(img, cvPoints, true, cv::Scalar(0, 255, 0), 1);
-        } else {
-            std::cout << "No geometry." << std::endl;
-        }
-
-        OGRFeature::DestroyFeature(poFeature);
-    }
-
-    std::vector<cv::Point> pathPoints;
-    for (const auto& point : result) {
-        cv::Point cvPoint((point.x - minX) * scaleX, (maxY - point.y) * scaleY);
-        pathPoints.push_back(cvPoint);
-    }
-
-    // 在图像上绘制路径
-    cv::polylines(img, pathPoints, false, cv::Scalar(255, 0, 0), 2);  // 使用红色线条绘制路径
-
-    // 如果需要在路径上的每个点处绘制小圆点，可以使用以下代码：
-    for (const auto& point : pathPoints) {
-        cv::circle(img, point, 3, cv::Scalar(0, 0, 255), -1);  // 使用红色圆点标记路径上的每个点
-    }
+    visualizePolygonsAndPath(polygonPoints, resultFrom);
+    
+    
 
 
     GDALClose(poDS);
