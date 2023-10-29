@@ -8,14 +8,17 @@
 #include <ogr_feature.h>
 #include <ogrsf_frmts.h>
 #include <vector>
+#include "Point2KML_refer.h"
 #include <constants.h>
-#include <Cluster_and_direct_planning.h>
+
 #include <sstream> // 用于 std::ostringstream
 
 // Struct declarations
 struct Point3D {
     double x, y, z;
 public:
+    Point3D(double x, double y, double z) : x(x), y(y), z(z) {}
+    Point3D() : x(0.0), y(0.0), z(0.0) {}
     bool operator==(const Point3D& other) const {
         return this->x == other.x && this->y == other.y && this->z == other.z;
     }
@@ -27,6 +30,9 @@ public:
 
 struct Vector3D {
     double x, y, z;
+public:
+    Vector3D(double x, double y, double z) : x(x), y(y), z(z) {}
+    Vector3D() : x(0.0), y(0.0), z(0.0) {}
 };
 struct Polygon3D {
     Point3D points[4];

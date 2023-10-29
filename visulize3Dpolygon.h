@@ -19,7 +19,9 @@
 #include <vtkSphereSource.h>
 #include <vtkGlyph3D.h>
 #include "generate_path.h"
-
-void visualizePolygonsAndPath(const std::vector<Polygon3D>& polygonPoints, const std::vector<Point3D>& result);
+#include "random"
+void visualizePolygonsAndPath(const std::vector<Polygon3D>& polygonPoints, const std::vector<std::vector<Point3D>>& result);
+void visualizePath(const std::vector<Point3D>& result, vtkSmartPointer<vtkRenderer> renderer);
+void visualizePolygons(const std::vector<Polygon3D>& polygonPoints, vtkSmartPointer<vtkRenderer> renderer, float polygonsToVisualizeProbability);
 
 #endif // VISUALIZE3DPOLYGON_H

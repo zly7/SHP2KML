@@ -2,7 +2,7 @@
 #include "Point2KML_refer.h"
 #include "PoissonDiskSampler.h"
 #include "visulize3Dpolygon.h"
-
+#include <Cluster_and_direct_planning.h>
 
 
 std::vector<Point3D> greedyTSP(const Point3D& start, const std::vector<Point3D>& points) {
@@ -43,7 +43,7 @@ std::vector<Point3D> interpolatePoints(const std::vector<Point3D>& originalResul
         const Point3D& A = originalResult[i];
         const Point3D& B = originalResult[i + 1];
 
-        double dist = distance(A, B);
+        double dist = Point3D::distance(A, B);
         int numInterpolatedPoints = static_cast<int>(dist / interval);
 
         interpolatedResult.push_back(A);  // 添加起始点
@@ -66,6 +66,16 @@ std::vector<Point3D> interpolatePoints(const std::vector<Point3D>& originalResul
 
     return interpolatedResult;
 }
+
+std::vector<std::vector<Point3D>> interpolatePoints(const std::vector<std::vector<Point3D>>& originalResult2D, double interval) {
+    std::vector<std::vector<Point3D>> interpolatedResult2D;
+    for(const auto& originalResult : originalResult2D) {
+        std::vector<Point3D> interpolatedResult = interpolatePoints(originalResult, interval);
+        interpolatedResult2D.push_back(interpolatedResult);
+    }
+    return interpolatedResult2D;
+}
+
 
 
 
@@ -104,6 +114,37 @@ std::vector<Waypoint> convertToWaypoints(const std::vector<Point3D>& points3D,do
     return waypoints;
 }
 
+std::vector<std::vector<Waypoint>> convertToWaypoints(const std::vector<std::vector<Point3D>>& points3D2D, double centralMeridian) {
+    std::vector<std::vector<Waypoint>> waypoints2D;
+    for(const auto& points3D : points3D2D) {
+        std::vector<Waypoint> waypoints = convertToWaypoints(points3D, centralMeridian);
+        waypoints2D.push_back(waypoints);
+    }
+    return waypoints2D;
+}
+
+
+
+bool generateKMLsFromWaypoints(const std::vector<std::vector<Waypoint>>& waypointsGroups, const std::string& baseFilename) {
+    bool allSuccessful = true; // 用于跟踪所有文件是否都成功生成
+
+    for(size_t i = 0; i < waypointsGroups.size(); ++i) {
+        const auto& waypoints = waypointsGroups[i];
+
+        // 生成文件名
+        std::ostringstream filenameStream;
+        filenameStream << baseFilename << (i + 1) << ".kml"; // i + 1 以确保从 1 开始编号
+        std::string filename = filenameStream.str();
+
+        // 调用 generateKMLFromWaypoints 函数
+        bool success = generateKMLFromWaypoints(waypoints, filename);
+        if(!success) {
+            allSuccessful = false; // 如果任何一个文件生成失败，更新 allSuccessful 标志
+        }
+    }
+
+    return allSuccessful; // 如果所有文件都成功生成，返回 true，否则返回 false
+}
 
 
 
@@ -195,7 +236,11 @@ int main() {
         };
         viewPoints.push_back(viewPoint);
     }
-
+    double totalHeight = 0.0;
+    for(const auto& viewPoint : viewPoints) {
+        totalHeight += viewPoint.z; // 假设 z 表示高度
+    }
+    double averageHeightForViewpoint = totalHeight / viewPoints.size();
 
     double d_prj = 0.958*4.5;
     double r_overlap = 0.3;
@@ -203,27 +248,26 @@ int main() {
     float cell_size = 2; // for hash in poisson disk sampling
 
     std::vector<std::vector<Point3D>> resultFrom;
-    if(GlobalConstants::ALGORITHM_NAME=="possion_sample_and_greedyTSP"){
+    std::cout << "algorithm name: " << GlobalConstants::ALGORITHM_NAME << std::endl;
+    if(strcmp(GlobalConstants::ALGORITHM_NAME,"possion_sample_and_greedyTSP")==0){
 
         PoissonDiskSampler sampler(cell_size, viewPoints);
         std::vector<Point3D> sample_viewpoints = sampler.PoissonDiskSampling(D_disk, viewPoints);
         
         std::vector<Point3D> resultFromTemp = greedyTSP(sample_viewpoints[0], sample_viewpoints);
         resultFrom.push_back(resultFromTemp);
-    }else if (GlobalConstants::ALGORITHM_NAME=="cluster_and_direct_planning"){
+    }else if (strcmp(GlobalConstants::ALGORITHM_NAME,"cluster_and_direct_planning")==0){
         int k = GlobalConstants::num_planes; 
         std::vector<std::vector<Point3D>>  clusters = kMeansClustering(viewPoints, k);
-
-        resultFrom = 
+        resultFrom = generateZigzagTrajectories(clusters, D_disk, averageHeightForViewpoint);
     }else{
         std::cout<<"wrong algorithm name"<<std::endl;
-
     }
     
     double interval = 1.0;  // 1米间隔
-    std::vector<Point3D> newResult = interpolatePoints(resultFrom, interval);
-    std::vector<Waypoint> waypoints = convertToWaypoints(newResult, centralMeridian);
-    generateKMLFromWaypoints(waypoints, "final_output.kml");
+    std::vector<std::vector<Point3D>> newResult = interpolatePoints(resultFrom, interval);
+    std::vector<std::vector<Waypoint>> waypoints = convertToWaypoints(newResult, centralMeridian);
+    generateKMLsFromWaypoints(waypoints, "final_output");
 
     double scaleX = img.cols / (maxX - minX);
     double scaleY = img.rows / (maxY - minY);

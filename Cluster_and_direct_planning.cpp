@@ -47,7 +47,7 @@ std::vector<std::vector<Point3D>> generateZigzagTrajectories(const std::vector<s
         for(const auto& vertex : vertices) {
             if(vertex == start) continue;
             float distSquared = (vertex.x - start.x) * (vertex.x - start.x) + (vertex.y - start.y) * (vertex.y - start.y);
-            if(distSquared < minDist1) {
+            if(distSquared < minDist1) {  //minDist1是最小的，minDist2是第二小的
                 minDist2 = minDist1;
                 adjacentVertex2 = adjacentVertex1;
                 

@@ -13,15 +13,17 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(ShapefileReader)
-
+message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
+include_directories(${CMAKE_SOURCE_DIR})
 # Find GDAL
 find_package(GDAL REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(VTK REQUIRED)
 include(${VTK_USE_FILE})
 
-add_executable(ShapefileReader generate_path.cpp Point2KML_refer.cpp tinyxml2.cpp PoissonDiskSample.cpp visulize3Dpolygon.cpp)
-
+#add_executable(ShapefileReader generate_path.cpp Point2KML_refer.cpp tinyxml2.cpp PoissonDiskSample.cpp visulize3Dpolygon.cpp constants.cpp Cluster_and_direct_planning.cpp)
+file(GLOB SOURCE_FILES "*.cpp")
+add_executable(ShapefileReader ${SOURCE_FILES})
 
 # Link
 # Link
